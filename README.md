@@ -22,7 +22,7 @@ Usage:
     veracode-dotnet-packager [flags]
 
 Flags:
-  -source string     The path to the JavaScript app you want to package (required)
+  -source string     The path to the dotnet project you want to package (required)
   -target string     The path where you want the vc-output.zip to be stored to (default ".")
 
 Example:
