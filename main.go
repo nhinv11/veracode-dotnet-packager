@@ -51,12 +51,16 @@ func main() {
 	log.Info("Found Debug Path = ", debugPath)
 	log.Info("Found .NET version = ", dotnetVersion)
 	
+	binPath = debugPath
+
 	publishFolderPath := checkForPublishFolder(debugPath, dotnetVersion)
 	if publishFolderPath != ""{
 		binPath = publishFolderPath
 		log.Info("Found .NET Publish Folder ", publishFolderPath)
-	} else {
-		binPath = debugPath		
+	}
+
+	if dotnetVersion != "" {
+		binPath = debugPath + string(os.PathSeparator) + dotnetVersion
 	}
 
 	log.Info("Creating a Zip while omitting non-required files - Started...")
@@ -82,6 +86,9 @@ func checkForDotNetVersion(source string) (debugPath string, version string) {
 
 		if d.IsDir() && strings.HasSuffix(path, "bin" + string(os.PathSeparator) + "Debug"){
 			debugPath = path
+		}
+		
+		if debugPath != "" {
 			for k := range dotnet_version_list {
 				if d.IsDir() && strings.HasSuffix(path, debugPath + string(os.PathSeparator) + dotnet_version_list[k]) {
 					version = dotnet_version_list[k]
@@ -237,12 +244,13 @@ func zipSource(source string, target string, testsPath string) error {
 
 func isRequired(path string, testsPath string) bool {
 	return !IsRoslynFolder(path) &&
-					!IsRuntimeFolder(path) &&
-					!IsRuntimeIdentifierFolder(path) &&
-					!IsWebRootFolder(path) &&
-					!IsSatelliteLanguageFolder(path) &&
-					!IsImage(path) &&
-					!IsDocument(path) &&
-					!IsVideo(path) &&
-					!IsFont(path) 
+		!IsRuntimeFolder(path) &&
+		!IsRuntimeIdentifierFolder(path) &&
+		!IsWebRootFolder(path) &&
+		!IsSatelliteLanguageFolder(path) &&
+		!IsImage(path) &&
+		!IsDocument(path) &&
+		!IsVideo(path) &&
+		!IsFont(path) &&
+		!IsNestedArchive(path)
 }

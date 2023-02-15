@@ -12,6 +12,11 @@ Help is built-in!
 
 # How to Use ⚙
 
+App needs to be compiled before running packager. 
+To compile run:
+
+dotnet publish -c Debug /p:UseAppHost=false /p:SatelliteResourceLanguages="en"
+
 ```text
 Usage:
     veracode-dotnet-packager [flags]

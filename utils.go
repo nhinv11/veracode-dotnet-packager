@@ -18,6 +18,7 @@ var didPrintImagesMsg bool = false
 var didPrintDocumentsMsg bool = false
 var didPrintVideoMsg bool = false
 var didPrintFontsMsg bool = false
+var didPrintNestedArchiveMsg bool = false
 
 func IsRoslynFolder(path string) bool {
 	if strings.Contains(path, string(os.PathSeparator)+"Roslyn") {
@@ -173,6 +174,24 @@ func IsFont(path string) bool {
 			if !didPrintFontsMsg {
 				log.Info("\tIgnoring fonts (such as `.woff`)")
 				didPrintFontsMsg = true
+			}
+
+			return true
+		}
+	}
+
+	return false
+}
+
+// check for fonts (like .woff)
+func IsNestedArchive(path string) bool {
+	archiveExtensions := [4]string{".zip", ".tar", ".gz", ".7z"}
+
+	for _, element := range archiveExtensions {
+		if strings.HasSuffix(path, element) {
+			if !didPrintNestedArchiveMsg {
+				log.Info("\tIgnoring nested archives (such as `.zip`, `.tar`)")
+				didPrintNestedArchiveMsg = true
 			}
 
 			return true
