@@ -1,2 +1,6 @@
+# The output ZIP file
+*.zip
 
+# created releases
 veracode-dotnet-packager
+releases

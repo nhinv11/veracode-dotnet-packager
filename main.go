@@ -11,9 +11,10 @@ import (
 	"time"
 
 	log "github.com/sirupsen/logrus"
+
+	"github.com/fatih/color"
 )
 
-var language = "dotnet"
 var missingDebugFolder bool = false
 
 // reused some code from https://github.com/fw10/veracode-javascript-packager/
@@ -25,11 +26,22 @@ func main() {
 
 	flag.Parse()
 
-	log.Info("#################################################")
-	log.Info("#                                               #")
-	log.Info("#   Veracode ", language, " Packager (Unofficial)       #")
-	log.Info("#                                               #")
-	log.Info("#################################################" + "\n\n")
+	color.Green("#################################################")
+	color.Green("#                                               #")
+	color.Green("#     Veracode dotnet Packager (Unofficial)     #")
+	color.Green("#                                               #")
+	color.Green("#################################################" + "\n\n")
+
+	color.Yellow("Current version: %s\n\n", AppVersion)
+
+	// check if a later version of this tool exists
+	notifyOfUpdates()
+
+	// fail if `--source` was not provided
+	if *sourcePtr == "" {
+		color.Red("No `-source` was provided. Run `--help` for the built-in help.")
+		return
+	}
 
 	var binPath string
 	var testsPath string
@@ -48,19 +60,23 @@ func main() {
 	log.Info("'Smells' Check - Done\n\n")
 
 	debugPath, dotnetVersion := checkForDotNetVersion(*sourcePtr)
-	log.Info("Found Debug Path = ", debugPath)
-	log.Info("Found .NET version = ", dotnetVersion)
-	
-	binPath = debugPath
-
-	publishFolderPath := checkForPublishFolder(debugPath, dotnetVersion)
-	if publishFolderPath != ""{
-		binPath = publishFolderPath
-		log.Info("Found .NET Publish Folder ", publishFolderPath)
+	if debugPath != "" {
+		log.Info("Found Debug Folder ", debugPath)
+		binPath = debugPath
+		log.Info("Set project BIN path to ", debugPath, "\n\n")
 	}
 
 	if dotnetVersion != "" {
+		log.Info("Found .NET version = ", dotnetVersion)
 		binPath = debugPath + string(os.PathSeparator) + dotnetVersion
+		log.Info("Set project BIN path to ", binPath, "\n\n")
+	}
+
+	publishFolderPath := checkForPublishFolder(debugPath, dotnetVersion)
+	if publishFolderPath != ""{
+		log.Info("Found .NET Publish Folder")
+		binPath = publishFolderPath
+		log.Info("Set project BIN path to ", publishFolderPath, "\n\n")
 	}
 
 	log.Info("Creating a Zip while omitting non-required files - Started...")
