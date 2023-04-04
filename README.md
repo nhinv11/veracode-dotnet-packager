@@ -4,6 +4,10 @@ Please note that this is not an official Veracode project, not supported by Vera
 
 Please feel free to extend the existing functionality, followed by a `Merge Request` ❤️.
 
+# Release v0.0.1
+You can grab the pre-built distributions here:
+https://github.com/nhinv11/veracode-dotnet-packager/releases/tag/v0.0.1
+
 # Built-in Help 🆘
 
 Help is built-in!
