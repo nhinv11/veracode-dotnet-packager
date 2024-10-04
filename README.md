@@ -1,5 +1,7 @@
 # veracode-dotnet-packager ⚡
 
+# DEPRECATED, PLEASE USE THE OFFICIAL PACKAGER AT: https://docs.veracode.com/r/About_auto_packaging
+
 Please note that this is not an official Veracode project, not supported by Veracode in any form, and comes with no warranty whatsoever. It is simply a little pet project of mine trying to make the life of Veracode's DotNet customers a bit easier. Use at your own risk.
 
 Please feel free to extend the existing functionality, followed by a `Merge Request` ❤️.
